@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report Template Builder – BluePD</title>
+  <meta name="description" content="Generate a professional report opener in seconds. Fill in your officer info once and copy a ready-to-use report starter." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:           #070b12;
+      --ink-2:         #0c131f;
+      --panel:         #111b2c;
+      --line:          #1f2c42;
+      --line-bright:   #354a6e;
+      --text:          #dde6f3;
+      --text-dim:      #7e8eaa;
+      --accent:        #2f6fed;
+      --accent-bright: #5ea1f7;
+      --green:         #3ecf8e;
+      --red:           #d9544a;
+      --font-display:  'Oswald', sans-serif;
+      --font-body:     'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--ink);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; }
+
+    /* ── NAV ── */
+    nav.nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 2rem;
+      background: rgba(7,11,18,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .nav-logo__badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 22%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .nav-logo__text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .nav-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent-bright);
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      padding: 0.15rem 0.4rem;
+    }
+
+    .nav-back {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--accent-bright); }
+
+    /* ── HERO ── */
+    .page-hero {
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(47,111,237,0.1) 0%, transparent 60%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      margin-bottom: 1rem;
+    }
+
+    .page-hero h1 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-hero h1 span { color: var(--accent-bright); }
+
+    .page-hero p {
+      color: var(--text-dim);
+      max-width: 520px;
+      margin: 0 auto;
+      font-size: 1rem;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .builder-wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 760px) {
+      .builder-wrap { grid-template-columns: 1fr; padding: 2rem 1.25rem 4rem; }
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.75rem;
+    }
+
+    .card-label {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line-bright);
+    }
+
+    /* ── FORM ── */
+    .field { margin-bottom: 1.1rem; }
+    .field:last-of-type { margin-bottom: 0; }
+
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .field label .req { color: var(--accent-bright); margin-left: 2px; }
+    .field label .opt { color: var(--text-dim); font-weight: 400; text-transform: none; font-size: 0.75rem; letter-spacing: 0; }
+
+    .field input,
+    .field select {
+      width: 100%;
+      background: var(--ink-2);
+      border: 1px solid var(--line-bright);
+      border-radius: 5px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 0.65rem 0.85rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .field input::placeholder { color: var(--text-dim); opacity: 0.6; }
+
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(47,111,237,0.18);
+    }
+
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237e8eaa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+      padding-right: 2.2rem;
+      cursor: pointer;
+    }
+
+    .field select option { background: var(--panel); }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+
+    .save-note {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .save-note svg { flex-shrink: 0; }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.4rem;
+      border-radius: 5px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      letter-spacing: 0.02em;
+    }
+
+    .btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+    .btn--primary {
+      background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(47,111,237,0.3);
+    }
+
+    .btn--primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn--primary:active { transform: translateY(0); }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--text-dim);
+      border: 1px solid var(--line-bright);
+    }
+
+    .btn--ghost:hover { border-color: var(--accent); color: var(--accent-bright); }
+
+    /* ── OUTPUT PANEL ── */
+    .output-card { position: relative; }
+
+    .output-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 3rem 1.5rem;
+      text-align: center;
+      min-height: 280px;
+    }
+
+    .output-placeholder svg {
+      width: 48px;
+      height: 48px;
+      color: var(--line-bright);
+    }
+
+    .output-placeholder p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      max-width: 220px;
+    }
+
+    .output-result { display: none; }
+
+    .output-text {
+      background: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: var(--text);
+      white-space: pre-wrap;
+      min-height: 180px;
+    }
+
+    .output-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .copy-status {
+      font-size: 0.8rem;
+      color: var(--green);
+      display: none;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .copy-status.show { display: flex; }
+
+    .type-badge {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      background: rgba(47,111,237,0.1);
+      border: 1px solid rgba(47,111,237,0.25);
+      border-radius: 3px;
+      padding: 0.2rem 0.55rem;
+    }
+
+    /* ── TIPS SECTION ── */
+    .tips-wrap {
+      grid-column: 1 / -1;
+      background: var(--ink-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.5rem 1.75rem;
+    }
+
+    .tips-wrap h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #fff;
+      margin-bottom: 0.85rem;
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .tip {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .tip-icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 1px solid var(--line-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .tip-icon svg { width: 15px; height: 15px; color: var(--accent-bright); }
+
+    .tip p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.55;
+    }
+
+    .tip strong { color: var(--text); display: block; margin-bottom: 0.15rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--line);
+      background: var(--ink);
+    }
+
+    .footer-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.6rem;
+    }
+
+    footer p { font-size: 0.8rem; color: var(--text-dim); }
+    footer a { transition: color 0.2s; }
+    footer a:hover { color: var(--accent-bright); }
+
+    @media (max-width: 480px) {
+      nav.nav { padding: 0.9rem 1.25rem; }
+      .page-hero { padding: 3rem 1.25rem 2.5rem; }
+      .tips-wrap { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <!-- BluePD badge icon (base64 inline) -->
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/wAARCAA4ADgDASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAQFBgMBAgf/xAAsEAABBAEDAwMDBQAAAAAAAAABAAIDBAUREiExBhNBUWFxFCIykcHR8P/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/xAAcEQEBAQABBQAAAAAAAAAAAAAAARECEiExQf/aAAwDAQACEQMRAD8A/VERAREQEREBERARFiySsjY573BrGglziYAA3JK5uujXVWyJ8e4/lkTt+Drl7Oo4C1VCpCZXy2Hdnxggbec8Y81xbFqc4lN6d3l6rGJWXFJSo3g3KZpSCCRhHAkbt58+oB8lp6XNyFejTngjqymWJj5MSSBrsnkD1JxjOFrWVv2LHFbP+1h1aNUOBPM6Y+Fj1oKFOCnW8mGCNsUbcknDRgZJ3JX1LkxxtijbGxoa1oAAHQBdUVX1ERZBERAREQERfEsjIo3SSuDWMBc5x6AAZJQex0i2dL9OoJGR7sLY4y5xHqA3H0C5bRWxeWbTLOFLGe8iduHgnbGADkfqFb0bTps+hGLMjZn8k8OQ0ZAOB08vmrBZTqxSlsUpnBrJKkrSQAe5w0hwHvxn7rQubR0opYlq7tnbQHuAkZEfEO4Y27gAceFk0BEXF9mCMkSzRMI6hzwCg7Is+p+oNMpbsrXZQ12LI3IGefXHZcO1ahqt/T7rZop4pXNx4g13EknGDwT+4VaERY1tQp2y8V7EUrmbFwY8OxnpuF3PpKuvY8/wBOzHb7WTPjFW41rQ0OLnbgkbfIbH91rIiAiIgIiIPmWNksbopGB8bgWuaRkEHkFfN2j6VZpzxSxNMLdxYWktL8cHfkgn1C+kXq5OE6q0c1vWW7p1mmzT4ZLszGPfkFobnByBsQM8/sqj8TazQsTzST2MN8R8mQN8b7N/PkAFLo69iS+wy1omuY9rwGkAcfPdeRMrWKsteSBzXROGWuA4KlvZr3G9aE/bXRzIK5bFWr+YLTcPEYA5cQMDPuD+FWt/VZHMjAqQgNAGQ93T7KSiyjJf/9k=" alt="BluePD" class="nav-logo__badge" />
+    <span class="nav-logo__text">BluePD</span>
+    <span class="nav-tag">iOS</span>
+  </a>
+  <a href="index.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Home
+  </a>
+</nav>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div class="eyebrow">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
+    Officer Tool
+  </div>
+  <h1>Report <span>Template Builder</span></h1>
+  <p>Save your info once. Generate a professional report opener in seconds — ready to copy and paste on any call.</p>
+</header>
+
+<!-- BUILDER -->
+<div class="builder-wrap">
+
+  <!-- LEFT: FORM -->
+  <div>
+    <div class="card">
+      <div class="card-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Officer Information
+      </div>
+
+      <div class="field">
+        <label>Full Name <span class="req">*</span></label>
+        <input type="text" id="f-name" placeholder="e.g. John Clampitt" autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label>Department <span class="req">*</span></label>
+        <input type="text" id="f-dept" placeholder="e.g. Fowler Police Department" />
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label>Rank <span class="opt">(optional)</span></label>
+          <input type="text" id="f-rank" placeholder="e.g. Sergeant" />
+        </div>
+        <div class="field">
+          <label>Badge # <span class="opt">(optional)</span></label>
+          <input type="text" id="f-badge" placeholder="e.g. 214" />
+        </div>
+      </div>
+
+      <div class="save-note">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Your info saves automatically in your browser.
+      </div>
+    </div>
+
+    <!-- REPORT DETAILS -->
+    <div class="card" style="margin-top: 1.25rem;">
+      <div class="card-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Report Details
+      </div>
+
+      <div class="field">
+        <label>Report Type</label>
+        <select id="f-type">
+          <option value="incident">Incident Report</option>
+          <option value="arrest">Arrest Report</option>
+          <option value="traffic">Traffic Stop</option>
+          <option value="domestic">Domestic Disturbance</option>
+          <option value="supplement">Supplement Report</option>
+          <option value="accident">Vehicle Accident</option>
+          <option value="theft">Theft / Larceny Report</option>
+          <option value="suspicious">Suspicious Person / Vehicle</option>
+        </select>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="f-date" />
+        </div>
+        <div class="field">
+          <label>Approx. Time</label>
+          <input type="time" id="f-time" />
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn--primary" onclick="generate()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+          Generate Opener
+        </button>
+        <button class="btn btn--ghost" onclick="clearForm()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div>
+    <div class="card output-card">
+      <div class="card-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Generated Report Opener
+      </div>
+
+      <!-- Empty state -->
+      <div class="output-placeholder" id="output-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
+        <p>Fill in your officer info and hit <strong style="color:#dde6f3">Generate Opener</strong> to get your report starter.</p>
+      </div>
+
+      <!-- Result -->
+      <div class="output-result" id="output-result">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+          <span class="type-badge" id="output-type-badge">INCIDENT REPORT</span>
+          <span style="font-size:0.75rem; color:var(--text-dim);" id="output-meta"></span>
+        </div>
+        <div class="output-text" id="output-text"></div>
+        <div class="output-actions">
+          <div class="copy-status" id="copy-status">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Copied to clipboard
+          </div>
+          <button class="btn btn--primary" onclick="copyText()" style="padding: 0.6rem 1.1rem; font-size:0.82rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy to Clipboard
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK TIPS -->
+    <div class="card" style="margin-top:1.25rem; background: var(--ink-2);">
+      <div class="card-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Quick Tips
+      </div>
+      <div style="display:flex; flex-direction:column; gap:0.75rem;">
+        <div class="tip">
+          <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <p><strong>Saves automatically</strong>Your name, rank, badge, and department persist between visits — no re-typing.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+          <p><strong>Date & time default to now</strong>Adjust them before generating if you're documenting a past incident.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
+          <p><strong>One tap to copy</strong>Hit Copy to Clipboard and paste directly into your RMS, email, or notes app.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPS BOTTOM ROW (wide screen) -->
+  <div class="tips-wrap" style="grid-column: 1 / -1; margin-top: 0.5rem;">
+    <h3>Report Types Included</h3>
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+        <p><strong>Incident Report</strong>General duty response — disturbance, welfare check, noise, etc.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/></svg></div>
+        <p><strong>Arrest Report</strong>Suspect taken into custody — includes in-custody language.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <p><strong>Traffic Stop</strong>Vehicle stop language with stop location and approach.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <p><strong>Domestic Disturbance</strong>Dispatch response to a domestic call — parties and scene.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <p><strong>Supplement Report</strong>Additional information added to a prior report number.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <p><strong>+ 3 more types</strong>Vehicle accident, theft/larceny, and suspicious person/vehicle.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-tag">// BluePD — Field Reference System</div>
+  <p><a href="index.html">← Back to BluePD Home</a> &nbsp;&middot;&nbsp; <a href="https://apps.apple.com/ca/app/bluepd/id6761055174" target="_blank" rel="noopener">Download on the App Store</a></p>
+  <p style="margin-top:0.5rem;">&copy; 2026 BluePD. All rights reserved.</p>
+</footer>
+
+<script>
+(function () {
+
+  /* ── Persist officer info ── */
+  var persist = ['f-name','f-dept','f-rank','f-badge'];
+  persist.forEach(function(id) {
+    var el = document.getElementById(id);
+    var saved = localStorage.getItem('bluepd_' + id);
+    if (saved) el.value = saved;
+    el.addEventListener('input', function() {
+      localStorage.setItem('bluepd_' + id, el.value.trim());
+    });
+  });
+
+  /* ── Default date/time to now ── */
+  var now = new Date();
+  var yyyy = now.getFullYear();
+  var mm   = String(now.getMonth() + 1).padStart(2, '0');
+  var dd   = String(now.getDate()).padStart(2, '0');
+  document.getElementById('f-date').value = yyyy + '-' + mm + '-' + dd;
+  var hh = String(now.getHours()).padStart(2, '0');
+  var mn = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('f-time').value = hh + ':' + mn;
+
+  /* ── Helpers ── */
+  function formatDate(val) {
+    var parts = val.split('-');
+    var months = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+    return months[parseInt(parts[1]) - 1] + ' ' + parseInt(parts[2]) + ', ' + parts[0];
+  }
+
+  function formatMilitary(val) {
+    return val.replace(':', '') + ' hours';
+  }
+
+  var typeMap = {
+    incident:   { label: 'INCIDENT REPORT',           phrase: 'responded to the following incident' },
+    arrest:     { label: 'ARREST REPORT',              phrase: 'conducted an arrest' },
+    traffic:    { label: 'TRAFFIC STOP',               phrase: 'conducted a traffic stop' },
+    domestic:   { label: 'DOMESTIC DISTURBANCE',       phrase: 'responded to a domestic disturbance call' },
+    supplement: { label: 'SUPPLEMENT REPORT',          phrase: 'prepared this supplement to the above-referenced report' },
+    accident:   { label: 'VEHICLE ACCIDENT REPORT',   phrase: 'responded to a vehicle accident' },
+    theft:      { label: 'THEFT / LARCENY REPORT',    phrase: 'responded to a reported theft/larceny' },
+    suspicious: { label: 'SUSPICIOUS PERSON/VEHICLE', phrase: 'investigated a suspicious person/vehicle complaint' },
+  };
+
+  /* ── Generate ── */
+  window.generate = function () {
+    var name  = document.getElementById('f-name').value.trim();
+    var dept  = document.getElementById('f-dept').value.trim();
+    var rank  = document.getElementById('f-rank').value.trim();
+    var badge = document.getElementById('f-badge').value.trim();
+    var type  = document.getElementById('f-type').value;
+    var date  = document.getElementById('f-date').value;
+    var time  = document.getElementById('f-time').value;
+
+    if (!name || !dept) {
+      alert('Please enter your name and department before generating.');
+      return;
+    }
+
+    var displayName = rank ? rank + ' ' + name : name;
+    var badgeStr    = badge ? ', Badge #' + badge : '';
+    var dateStr     = date ? formatDate(date) : 'the above date';
+    var timeStr     = time ? formatMilitary(time) : '______ hours';
+    var info        = typeMap[type] || typeMap['incident'];
+
+    var opener =
+      'On ' + dateStr + ', at approximately ' + timeStr + ', I, ' + displayName +
+      badgeStr + ', employed with the ' + dept + ', was on duty in full uniform when I ' +
+      info.phrase + '.\n\n' +
+      '[Continue report narrative here...]\n\n' +
+      '____________________________\n' +
+      displayName + badgeStr + '\n' + dept;
+
+    document.getElementById('output-placeholder').style.display = 'none';
+    document.getElementById('output-result').style.display      = 'block';
+    document.getElementById('output-text').textContent          = opener;
+    document.getElementById('output-type-badge').textContent    = info.label;
+    document.getElementById('output-meta').textContent          = dateStr + ' · ' + timeStr;
+    document.getElementById('copy-status').classList.remove('show');
+  };
+
+  /* ── Copy ── */
+  window.copyText = function () {
+    var text = document.getElementById('output-text').textContent;
+    navigator.clipboard.writeText(text).then(function () {
+      var status = document.getElementById('copy-status');
+      status.classList.add('show');
+      setTimeout(function () { status.classList.remove('show'); }, 2500);
+    }).catch(function () {
+      /* fallback */
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity  = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      var status = document.getElementById('copy-status');
+      status.classList.add('show');
+      setTimeout(function () { status.classList.remove('show'); }, 2500);
+    });
+  };
+
+  /* ── Clear ── */
+  window.clearForm = function () {
+    persist.forEach(function(id) {
+      document.getElementById(id).value = '';
+      localStorage.removeItem('bluepd_' + id);
+    });
+    document.getElementById('output-placeholder').style.display = '';
+    document.getElementById('output-result').style.display      = 'none';
+  };
+
+})();
+</script>
+
+</body>
+</html>
